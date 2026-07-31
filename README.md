@@ -69,13 +69,7 @@ This project also serves as a way to practice front-end development, JavaScript,
 - Spending charts
 - Search and filtering
 - Dark mode
-
----
-
-## 📷 Screenshots
-
-(Add screenshots here)
-
+  
 ---
 
 ## 📄 License
