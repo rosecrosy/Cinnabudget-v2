@@ -41,6 +41,9 @@ const expenseCount = document.getElementById("expenseCount");
 const exportBtn = document.getElementById("exportBtn");
 const saveBudgetBtn = document.getElementById("saveBudgetBtn");
 
+const budgetProgress = document.getElementById("budgetProgress");
+const budgetPercentage = document.getElementById("budgetPercentage");
+
 exportBtn.addEventListener("click", exportToExcel);
 
 const toast = document.getElementById("toast");
@@ -123,6 +126,20 @@ function updateBudgetDashboard() {
   }
 
   const percentage = total === 0 ? 0 : Math.min((spent / total) * 100, 100);
+  budgetProgress.style.width = `${percentage}%`;
+
+  budgetPercentage.textContent = `${percentage.toFixed(0)}% Used`;
+
+  if (percentage <= 50) {
+  budgetProgress.style.background = "#8EC5FC"; // Blue
+} else if (percentage <= 70) {
+  budgetProgress.style.background = "#CDB4DB"; // Lavender
+} else if (percentage <= 85) {
+  budgetProgress.style.background = "#F8AFCB"; // Pink
+} else {
+  budgetProgress.style.background = "#FF8A8A"; // Soft Red
+}
+
   if (percentage <= 50) {
     budgetStatus.textContent = "🩵 You're doing great! Keep it up!";
   } else if (percentage <= 70) {
