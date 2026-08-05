@@ -104,8 +104,6 @@ function updateBudgetDashboard() {
   const total = Number(totalBudget.value) || 0;
   let spent = 0;
 
-  const { startDate, endDate } = getCurrentPayCycle();
-
   expenses.forEach((item) => {
     spent += item.amount;
   });
@@ -131,14 +129,14 @@ function updateBudgetDashboard() {
   budgetPercentage.textContent = `${percentage.toFixed(0)}% Used`;
 
   if (percentage <= 50) {
-  budgetProgress.style.background = "#8EC5FC"; // Blue
-} else if (percentage <= 70) {
-  budgetProgress.style.background = "#CDB4DB"; // Lavender
-} else if (percentage <= 85) {
-  budgetProgress.style.background = "#F8AFCB"; // Pink
-} else {
-  budgetProgress.style.background = "#FF8A8A"; // Soft Red
-}
+    budgetProgress.style.background = "#8EC5FC"; // Blue
+  } else if (percentage <= 70) {
+    budgetProgress.style.background = "#CDB4DB"; // Lavender
+  } else if (percentage <= 85) {
+    budgetProgress.style.background = "#F8AFCB"; // Pink
+  } else {
+    budgetProgress.style.background = "#FF8A8A"; // Soft Red
+  }
 
   if (percentage <= 50) {
     budgetStatus.textContent = "🩵 You're doing great! Keep it up!";
@@ -303,48 +301,6 @@ function showToast(message = null) {
   }, 2500);
 }
 
-// ==========================
-// Current Pay Cycle
-// ==========================
-
-function getCurrentPayCycle() {
-  const today = new Date();
-
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const day = today.getDate();
-
-  let startDate;
-  let endDate;
-
-  if (day < 15) {
-    // Previous month's last day
-    startDate = new Date(year, month, 0);
-
-    // Current month's 15th
-    endDate = new Date(year, month, 15);
-  } else {
-    // Current month's 15th
-    startDate = new Date(year, month, 15);
-
-    // Current month's last day
-    endDate = new Date(year, month + 1, 0);
-  }
-
-  const options = {
-    month: "short",
-    day: "numeric",
-  };
-
-  document.getElementById("payCycleDisplay").textContent =
-    `${startDate.toLocaleDateString("en-US", options)} → ${endDate.toLocaleDateString("en-US", options)}`;
-  return {
-    startDate,
-
-    endDate,
-  };
-}
-
 // Save expenses into Local Storage
 
 function saveToLocalStorage() {
@@ -394,7 +350,6 @@ editBudgetBtn.addEventListener("click", () => {
 
 loadExpenses();
 loadBudget();
-getCurrentPayCycle();
 updateBudgetDashboard();
 
 function exportToExcel() {
