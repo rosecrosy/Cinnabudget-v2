@@ -25,6 +25,8 @@ dateInput.valueAsDate = new Date();
 // This array will temporarily store all expenses
 let expenses = [];
 
+let editingExpenseId = null;
+
 // Local Storage Key
 
 const STORAGE_KEY = "cinnabudget_expenses";
@@ -150,7 +152,7 @@ function updateBudgetDashboard() {
       "☁️ You're almost at your budget. Plan your next purchases carefully!";
   } else {
     budgetStatus.textContent =
-      "💖 You've reached your budget. That's okay! Let's plan for the next payday together!";
+      "💖 You've reached your budget. That's okay! Let's get back on track together!";
   }
 }
 
@@ -222,20 +224,32 @@ function saveExpense(event) {
     return;
   }
 
-  // Create an expense object
-  const expense = {
-    id: Date.now(),
+  if (editingExpenseId !== null) {
+    const expense = expenses.find((item) => item.id === editingExpenseId);
 
-    date: document.getElementById("date").value,
+    expense.date = document.getElementById("date").value;
+    expense.category = document.getElementById("category").value;
+    expense.paymentMethod = document.getElementById("paymentMethod").value;
+    expense.amount = Number(document.getElementById("amount").value);
+    expense.notes = document.getElementById("notes").value;
 
-    category: document.getElementById("category").value,
+    editingExpenseId = null;
 
-    paymentMethod: document.getElementById("paymentMethod").value,
+    saveToLocalStorage();
+    displayExpenses();
+    updateBudgetDashboard();
 
-    amount: Number(document.getElementById("amount").value),
+    showToast("🩵 Expense updated successfully!");
 
-    notes: document.getElementById("notes").value,
-  };
+    expenseForm.reset();
+    dateInput.valueAsDate = new Date();
+
+    document.querySelector(".save-btn").textContent = "☁️ Save Expense";
+
+    return;
+  }
+
+  const expense = {};
 
   // Save inside the array
   expenses.unshift(expense);
@@ -279,6 +293,11 @@ function displayExpenses() {
                             onclick="deleteExpense(${expense.id})">
                             🗑️
                         </button>
+                        <button
+                            class="edit-btn"
+                            onclick="editExpense(${expense.id})">
+                            ✏️
+                        </button>
                     </td>
                 </tr>
             `;
@@ -321,6 +340,23 @@ function deleteExpense(id) {
   displayExpenses();
 
   updateBudgetDashboard();
+}
+
+// Edit an expense
+function editExpense(id) {
+  const expense = expenses.find((item) => item.id === id);
+
+  if (!expense) return;
+
+  editingExpenseId = id;
+
+  document.getElementById("date").value = expense.date;
+  document.getElementById("category").value = expense.category;
+  document.getElementById("paymentMethod").value = expense.paymentMethod;
+  document.getElementById("amount").value = expense.amount;
+  document.getElementById("notes").value = expense.notes;
+
+  document.querySelector(".save-btn").textContent = "💙 Update Expense";
 }
 
 // Load expenses from Local Storage

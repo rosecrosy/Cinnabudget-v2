@@ -367,6 +367,34 @@ tbody tr:hover{
 
 }
 
+.edit-btn{
+
+    border:none;
+
+    background:#FFE8EC;
+
+    color:#D05C72;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+    transform:scale(1.1);
+
+    background:#FFD9E2;
+
+}
+
 /* ==============================
    Toast Notification
 ============================== */
